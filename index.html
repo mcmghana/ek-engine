@@ -125,6 +125,7 @@
       font-size: 0.9rem;
       font-weight: 600;
       transition: color 0.2s;
+      cursor: pointer;
     }
 
     .nav-links a:hover {
@@ -478,6 +479,7 @@
       color: var(--gold-light);
       text-decoration: none;
       font-weight: 700;
+      cursor: pointer;
     }
 
     /* Floating WhatsApp Button */
@@ -505,12 +507,151 @@
       transform: translateY(-3px);
     }
 
+    /* Modal Styles (Controlled by eke.js) */
+    .eke-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 7, 11, 0.85);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 2000;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .eke-modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .eke-modal-box {
+      background: linear-gradient(160deg, #161b29, #0d1018);
+      border: 2px solid var(--gold);
+      border-radius: 18px;
+      max-width: 780px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 34px 30px;
+      position: relative;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+      color: var(--text-main);
+    }
+
+    .eke-modal-close {
+      position: sticky;
+      top: 0;
+      float: right;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid var(--gold);
+      color: var(--gold-light);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      font-size: 1.3rem;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .eke-modal-close:hover {
+      background: var(--gold);
+      color: #0b0d12;
+    }
+
+    .eke-modal-badge {
+      display: inline-block;
+      background: rgba(232, 108, 31, 0.2);
+      border: 1px solid var(--orange);
+      color: #ff9c5e;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 50px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .eke-modal-title {
+      font-size: 1.85rem;
+      color: var(--gold-light);
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+
+    .eke-modal-tagline {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin-bottom: 22px;
+      font-weight: 600;
+    }
+
+    .eke-modal-section {
+      margin-bottom: 20px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .eke-modal-section:last-of-type {
+      border-bottom: none;
+    }
+
+    .eke-modal-section h4 {
+      color: var(--gold);
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .eke-modal-section p {
+      color: #dbe2ef;
+      font-size: 0.96rem;
+      margin-bottom: 10px;
+    }
+
+    .eke-modal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .eke-tier-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 14px;
+    }
+
+    .eke-tier-card strong {
+      display: block;
+      color: var(--gold-light);
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+
+    .eke-tier-card span {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
     @media (max-width: 600px) {
       .nav-links {
+        gap: 12px;
+      }
+      .nav-links a.hide-mobile {
         display: none;
       }
-      .deep-dive {
-        padding: 28px 20px;
+      .deep-dive, .eke-modal-box {
+        padding: 24px 18px;
       }
     }
   </style>
@@ -535,9 +676,9 @@
         </div>
       </a>
       <nav class="nav-links">
-        <a href="#features">Features</a>
-        <a href="#more-info">About EK Engine</a>
-        <a href="https://digirefera.com" target="_blank" rel="noopener">Live Showroom</a>
+        <a href="#features" class="hide-mobile">Features</a>
+        <a href="#about-ek-engine" data-eke-modal="open" style="color: var(--gold-light);">About Eli Kujo Engine</a>
+        <a href="https://digirefera.com" target="_blank" rel="noopener" class="hide-mobile">Live Showroom</a>
         <a href="https://wa.me/233267171555?text=Hello%20EK%20Engine%20Team!%20I%20want%20to%20buy%20the%20Founder's%20License%20for%20GHS%202000." target="_blank" rel="noopener" style="color: var(--whatsapp);">WhatsApp Us</a>
       </nav>
     </div>
@@ -569,4 +710,126 @@
         <!-- Primary & Secondary CTAs -->
         <div class="cta-group">
           <a
-            href="
+            href="https://wa.me/233267171555?text=Hello!%20I%20want%20to%20BUY%20the%20EK%20Engine%20Founder's%20License%20for%20GHS%202000%20(Offer%20valid%20until%2017%20JAN%202027)."
+            target="_blank"
+            rel="noopener"
+            class="btn btn-primary"
+          >
+            Click Here to Buy
+          </a>
+          <a href="#more-info" class="btn btn-secondary">
+            Click Here for More Info ↓
+          </a>
+        </div>
+
+        <!-- Interactive Click-to-Animate Platform Counter -->
+        <div class="counter-widget" id="platformCounterCard" role="button" tabindex="0" aria-label="Click to animate active platforms count">
+          <div class="counter-number" id="platformCountDisplay">0</div>
+          <div class="counter-title">Live Platforms Powered by EK Engine</div>
+          <div class="counter-hint" id="counterHintText">👆 Click here to animate live adoption count</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core Features Grid -->
+    <section id="features">
+      <div class="section-header">
+        <h3>Engineered for Speed, Scale &amp; Revenue</h3>
+        <p>Everything serious publishers need without bloated plugins, slow databases, or expensive monthly hosting fees.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-icon">⚡</span>
+          <h4>100% Serverless &amp; Offline-First</h4>
+          <p>Built on modern static edge architecture. Your newsroom loads instantaneously even on weak mobile networks and works offline.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">💰</span>
+          <h4>Instant AdSense Monetization</h4>
+          <p>Pre-engineered ad slots and clean semantic structure built to get approved fast and maximize revenue from day one.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🚀</span>
+          <h4>Bulk Publish 1,000 Articles in 1 Min</h4>
+          <p>Automate massive content ingestion and archival publishing in seconds—ideal for high-volume newsrooms and schools.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🌍</span>
+          <h4>SEO &amp; AEO Friendly</h4>
+          <p>Structured for both traditional Search Engines (Google/Bing) and modern AI Answer Engines so your stories rank first.</p>
+        </div>
+      </div>
+
+      <!-- Complete Deliverables Checklist -->
+      <div class="specs-box">
+        <h4>What You Get With Your EK Engine License</h4>
+        <ul class="specs-list">
+          <li>100% White Label Website</li>
+          <li>Professional Setup by Our Devs (Ready in 7 Days)</li>
+          <li>Your Own Custom Domain</li>
+          <li>Modular SPA Technology</li>
+          <li>Google AdSense Ready Architecture</li>
+          <li>Bulk Publishing Pipeline Ready</li>
+          <li>Writer Portfolio &amp; Community Ready</li>
+          <li>Optional Mobile App Setup</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 300-Word Deep Dive Explanation Section -->
+    <section id="more-info">
+      <div class="deep-dive">
+        <div class="deep-dive-content">
+          <h3>Why EK Engine? The Complete Picture</h3>
+          <p>
+            Eli Kujo Engine (EK Engine) is a revolutionary, serverless publishing platform engineered specifically for serious bloggers, independent journalists, educational institutions, and full-scale news and publishing houses. Backed by over ten years of hands-on media and software engineering experience, EK Engine eliminates the traditional headaches of legacy content management systems—no sluggish SQL databases, no vulnerable third-party plugins, and no escalating monthly cloud server bills. Built from the ground up with Africa and emerging digital markets in mind, its lightweight, modular Single Page Application (SPA) architecture delivers near-instant page loads even on low-bandwidth mobile connections, complete with offline reading capabilities.
+          </p>
+          <p>
+            Beyond raw speed, EK Engine is built as a true digital refinery that turns content into sustainable revenue. Publishers can bulk-publish up to 1,000 articles in a single minute, structure stories automatically for both Search Engine Optimization (SEO) and AI Answer Engine Optimization (AEO), and plug directly into Google AdSense for immediate monetization. Whether you are launching a multi-author newsroom, empowering student writers to build verified portfolios, or migrating an established media archive, our development team handles your complete white-label setup on your own custom domain—and even an optional mobile app—within just seven days.
+          </p>
+          <p>
+            Instead of renting your publishing infrastructure forever, you can secure full lifetime ownership. Take advantage of our limited Founder’s License at <strong>GHS 2,000</strong> (valid until <strong>17 January 2027</strong>) before our upcoming global marketplace rollout on Envato and CodeCanyon.
+          </p>
+
+          <div class="showroom-callout">
+            <div>
+              <strong style="color: var(--gold-light); display: block;">Experience EK Engine Live</strong>
+              <span style="font-size: 0.9rem; color: var(--text-muted);">Explore a live production deployment at our flagship digital showroom.</span>
+            </div>
+            <a href="https://digirefera.com" target="_blank" rel="noopener" class="btn btn-primary" style="padding: 11px 22px; font-size: 0.9rem;">
+              Visit digirefera.com →
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p style="margin-bottom: 8px;">
+      <strong>ELI KUJO ENGINE (EK ENGINE)</strong> • Built by MC MULTIMEDIA
+    </p>
+    <p>
+      <a href="#about-ek-engine" data-eke-modal="open">About Eli Kujo Engine</a> &nbsp;|&nbsp;
+      WhatsApp: <a href="https://wa.me/233267171555" target="_blank" rel="noopener">+233 26 7171 555</a> &nbsp;|&nbsp;
+      Showroom: <a href="https://digirefera.com" target="_blank" rel="noopener">digirefera.com</a>
+    </p>
+  </footer>
+
+  <!-- Floating WhatsApp Click-to-Chat Button -->
+  <a
+    href="https://wa.me/233267171555?text=Hello%20EK%20Engine!%20I%20would%20like%20to%20learn%20more%20and%20get%20started."
+    target="_blank"
+    rel="noopener"
+    class="whatsapp-float"
+    aria-label="Chat with us on WhatsApp"
+  >
+    <span>💬</span> WhatsApp: +233 26 7171 555
+  </a>
+
+  <!-- External EK Engine Script (Controls Platform Counter & About EK Engine Modal) -->
+  <script src="eke.js"></script>
+</body>
+</html>
