@@ -8,8 +8,10 @@
 (function () {
   // =========================================================================
   // EASY CONFIGURATION: Change this number anytime to update live platforms
-  // =========================================================================
+  // =========================================================================  
   const ACTIVE_PLATFORMS = 5;
+  const SCAN_START_FROM = 100;
+  const SCAN_DURATION_MS = 1400;
 
   // =========================================================================
   // 1. ALL ABOUT EK ENGINE MODAL CONTENT & LOGIC
@@ -140,46 +142,81 @@
   // =========================================================================
   // 2. ANIMATED PLATFORM COUNTER LOGIC
   // =========================================================================
-  function initPlatformCounter() {
+function initPlatformCounter() {
     const counterCard = document.getElementById("platformCounterCard");
     const countDisplay = document.getElementById("platformCountDisplay");
     const hintText = document.getElementById("counterHintText");
 
     if (!counterCard || !countDisplay) return;
 
-    let isAnimating = false;
-
-    function animatePlatformCount() {
-      if (isAnimating) return;
-      isAnimating = true;
-      if (hintText) hintText.textContent = "Counting live deployments...";
-
-      const duration = 1400;
-      const frameRate = 45;
-      const totalFrames = Math.floor(duration / frameRate);
-      let currentFrame = 0;
-
-      const interval = setInterval(() => {
-        currentFrame++;
-        if (currentFrame < totalFrames) {
-          const randomRoll = Math.floor(Math.random() * 89) + 10;
-          countDisplay.textContent = randomRoll;
-        } else {
-          clearInterval(interval);
-          countDisplay.textContent = ACTIVE_PLATFORMS;
-          if (hintText) {
-            hintText.textContent = "✔ Verified Active Platforms (Click to replay)";
-          }
-          isAnimating = false;
-        }
-      }, frameRate);
+    countDisplay.textContent = SCAN_START_FROM;
+    if (hintText) {
+      hintText.textContent = "Auto-scanning live platforms...";
     }
 
-    counterCard.addEventListener("click", animatePlatformCount);
+    let isScanning = false;
+    let hasAutoScanned = false;
+
+    function runDescendingScan() {
+      if (isScanning) return;
+      isScanning = true;
+
+      const startValue = SCAN_START_FROM;
+      const targetValue = ACTIVE_PLATFORMS;
+      const startTime = performance.now();
+
+      if (hintText) {
+        hintText.textContent = "Scanning live platforms...";
+      }
+
+      function step(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / SCAN_DURATION_MS, 1);
+
+        // Ease-out cubic slows smoothly as it lands on ACTIVE_PLATFORMS
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const currentValue = Math.round(startValue - (startValue - targetValue) * eased);
+
+        countDisplay.textContent = currentValue;
+
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          countDisplay.textContent = targetValue;
+          if (hintText) {
+            hintText.textContent = "✔ Live Platforms Powered by EK Engine • Click to rescan";
+          }
+          isScanning = false;
+        }
+      }
+
+      requestAnimationFrame(step);
+    }
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !hasAutoScanned) {
+              hasAutoScanned = true;
+              runDescendingScan();
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.35 }
+      );
+      observer.observe(counterCard);
+    } else {
+      hasAutoScanned = true;
+      runDescendingScan();
+    }
+
+    counterCard.addEventListener("click", runDescendingScan);
     counterCard.addEventListener("keydown", (e) => {
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
-        animatePlatformCount();
+        runDescendingScan();
       }
     });
   }
